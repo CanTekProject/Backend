@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://rreali1991:rick123@rrsystems.9krxkco.mongodb.net/overflowUser?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://CanTek:CanTek123@cantekcluster.uujud7m.mongodb.net/?retryWrites=true&w=majority')
   .then(() => {
     console.log('Connected to MongoDB');
   })
