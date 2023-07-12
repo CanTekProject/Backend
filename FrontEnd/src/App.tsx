@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Login from "./Pages/Login";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./Components/navbar";
+import HomePage from "./Pages/HomePage";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -12,10 +15,19 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <Login />
-      <h1>{message}</h1>
-    </div>
+    <Router>
+      {" "}
+      {/* Add the Router component here */}
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} index />
+          <Route path="/Home" element={<HomePage />} />
+          <Route path="/Login" element={<Login />} />
+        </Routes>
+        <h1>{message}</h1>
+      </div>
+    </Router>
   );
 }
 
