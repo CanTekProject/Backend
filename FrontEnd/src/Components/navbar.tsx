@@ -64,9 +64,9 @@ function Navbar() {
   return (
     <nav className="navClass">
       <div className="divClass">
-        <a className="pages" href="#Forum">
+        <NavLink className="pages" to="/Forum">
           Forum
-        </a>
+        </NavLink>
         <a className="pages" href="#Chat">
           Chat
         </a>
