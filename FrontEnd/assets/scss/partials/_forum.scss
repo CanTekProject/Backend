@@ -1,0 +1,128 @@
+.btn.btn-primary {
+  background-color: #b050eb;
+  color: white;
+  border: 1px solid #b050eb;
+  border-radius: 0px;
+}
+
+.btn.btn-primary.nav-button {
+  transition: 0.3s;
+  width: 120px;
+  margin-left: 1.5rem;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.btn.btn-primary.footer-button {
+  transition: 0.3s;
+  font-size: small;
+  width: 145px;
+  margin-left: 1.5rem;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.navbar {
+  background-color: #42344b;
+}
+
+input {
+  color: white;
+  outline: none;
+
+  :hover {
+    border: 1px solid #b050eb;
+  }
+}
+
+.searchbar {
+  background-color: #201f1f;
+  border: 1px solid #201f1f;
+  width: 400px;
+  height: 40px;
+  border-radius: 0px;
+
+  ::placeholder {
+    color: #a4a4a4;
+  }
+}
+
+.forum-container {
+  display: flex;
+  justify-content: space-around;
+
+  .left-sidebar-nav-links {
+    list-style-type: none;
+
+    .left-sidebar-nav-links-listitem {
+      margin: 10px;
+    }
+  }
+
+  .left-sidebar {
+    background-color: grey;
+  }
+
+  .mainbar {
+    .question-content {
+      background-color: grey;
+      padding: 10px;
+    }
+
+    .filters {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: row-reverse;
+    }
+
+    .answer-content {
+      .answer-response {
+        margin: 20px 0;
+        background-color: grey;
+        padding: 10px;
+
+        .response-icons {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+
+  .right-sidebar {
+    .right-sidebar-list {
+      .right-sidebar-listitem {
+        margin: 20px 0;
+        background: grey;
+        padding: 15px;
+      }
+
+      .question-button {
+        border: none;
+        background: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: 80%;
+        margin: 0 auto;
+
+        .forum-question-button {
+          background-color: orange;
+          border-color: orange;
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  background-color: #42344b;
+  padding: 8px 0;
+}

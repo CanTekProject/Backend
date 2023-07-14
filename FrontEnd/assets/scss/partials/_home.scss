@@ -1,0 +1,88 @@
+.home-container {
+  background-color: #282727;
+  min-height: 80vh;
+  padding-left: 15vw;
+  padding-right: 15vw;
+}
+
+.title-section {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 5vw;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.title {
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  gap: 40px;
+  bottom: 0;
+}
+
+.logo {
+  max-width: 15vw;
+}
+
+.image-section {
+  min-width: 40vw;
+}
+
+.image {
+  max-width: 40vw;
+}
+
+.description-section {
+  display: flex;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.empty-column {
+  flex-basis: 3;
+  min-width: 30%;
+}
+
+.text-column {
+  flex-basis: 7;
+  min-width: 70%;
+}
+
+.description {
+  color: white;
+}
+
+.showcase-section {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.image-column {
+  flex-basis: 7;
+  min-width: 70vw;
+}
+
+.showcase-image {
+  max-width: 60vw;
+}
+
+.additional-description {
+  color: white;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.join-us-description {
+  color: white;
+}
+
+.button-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

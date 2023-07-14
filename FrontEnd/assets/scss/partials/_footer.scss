@@ -1,0 +1,15 @@
+.footer {
+  background-color: #42344b;
+  min-height: 10vh;
+  display: flex;
+  justify-content: space-evenly;
+  color: white;
+  div {
+    flex-basis: 1;
+    max-width: 25vw;
+    margin-top: 0.5rem;
+  }
+  img {
+    max-width: 3rem;
+  }
+}

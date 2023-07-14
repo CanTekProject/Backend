@@ -1,0 +1,23 @@
+html {
+  font-size: 16px;
+}
+
+.btn-custom {
+  justify-content: center;
+  background-color: #b050eb;
+  border-color: #b050eb;
+  color: #ffffff;
+  border-radius: 0;
+  max-width: 8rem;
+  height: 3rem;
+  margin: 1rem;
+  @media all and (min-width: 0px) and (max-width: 568px) {
+    margin: 0;
+  }
+}
+
+@import './partials/guide';
+@import './partials/style';
+@import './partials/home';
+@import './partials/footer';
+@import './partials/header';
