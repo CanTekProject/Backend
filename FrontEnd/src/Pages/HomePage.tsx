@@ -1,6 +1,6 @@
 function HomePage() {
   return (
-    <body>
+    <body style={{ color: "white" }}>
       <h1>Welcome</h1>
     </body>
   );

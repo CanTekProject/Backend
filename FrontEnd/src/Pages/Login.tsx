@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import "./Login.css";
 
 interface LoginForm {
-  userName: string;
   email: string;
   password: string;
 }
 
 const LoginPage = () => {
   const [loginForm, setLoginForm] = useState<LoginForm>({
-    userName: "",
     email: "",
     password: "",
   });
@@ -19,24 +17,39 @@ const LoginPage = () => {
     setLoginForm((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // TODO: Perform login logic using the loginForm state
+
+    try {
+      const response = await fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginForm),
+      });
+
+      const data = await response.json();
+
+      if (data.status === "ok") {
+        // Display success message
+        alert("Login successful!");
+        window.location.href = "/Home"; // Redirect to the home page after successful login
+      } else {
+        // Display error message
+        alert(`Login failed: ${data.message}`);
+      }
+    } catch (error) {
+      // Handle network or server errors
+      console.error("Error occurred:", error);
+      alert("An error occurred during login");
+    }
   };
 
   return (
-    <div>
+    <div style={{ color: "white" }}>
       <h2>Login Page</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>UserName: </label>
-          <input
-            type="userName"
-            name="userName"
-            value={loginForm.userName}
-            onChange={handleInputChange}
-          />
-        </div>
         <div>
           <label>Email: </label>
           <input
@@ -57,6 +70,13 @@ const LoginPage = () => {
         </div>
         <button type="submit">Login</button>
       </form>
+      <hr style={{ margin: "20px", color: "white" }}></hr>
+      <div>
+        <p>Don't have an account?</p>
+        <a href="/Signup" className="registerLink">
+          <p>Click here to register</p>
+        </a>
+      </div>
     </div>
   );
 };
