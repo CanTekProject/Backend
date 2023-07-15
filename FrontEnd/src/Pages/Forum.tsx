@@ -1,6 +1,6 @@
 import "../../assets/scss/partials/_forum.scss";
 
-const Forum = () => {
+function Forum() {
   return (
     <>
       <br />
@@ -146,5 +146,5 @@ const Forum = () => {
       <br />
     </>
   );
-};
+}
 export default Forum;

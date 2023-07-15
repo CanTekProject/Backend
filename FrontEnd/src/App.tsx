@@ -7,10 +7,13 @@ import LoginPage from "./Pages/Login";
 import SignupPage from "./Pages/SignupPage";
 import Forum from "./Pages/Forum";
 import Footer from "./Components/footer";
+import About from "./Pages/About";
+import Privacy from "./Pages/Privacy";
+import ContactUs from "./Pages/ContactUs";
 
 function App() {
   /* Check server connection response  */
-  const [message, setMessage] = useState("");
+  const [_message, setMessage] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8000")
@@ -28,6 +31,9 @@ function App() {
           <Route path="/Home" element={<HomePage />} />
           <Route path="/Login" element={<LoginPage />} />
           <Route path="/Signup" element={<SignupPage />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Privacy" element={<Privacy />} />
+          <Route path="/ContactUs" element={<ContactUs />} />
         </Routes>
         <Footer />
       </div>

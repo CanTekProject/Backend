@@ -1,11 +1,11 @@
 .home-container {
   background-color: #282727;
-  min-height: calc(80vh - 140px); /* Subtract the total height of navbar + footer */
+  min-height: calc(80vh - 140px);
   padding-left: 15vw;
   padding-right: 15vw;
   padding-top: 70px;
   padding-bottom: 70px;
-  margin-bottom: 20px; /* Add margin-bottom to create space for the footer */
+  margin-bottom: 20px;
 }
 .title-section {
   display: flex;

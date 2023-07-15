@@ -6,6 +6,7 @@ import {
   faGithub,
   faDiscord,
 } from "@fortawesome/free-brands-svg-icons";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -22,27 +23,47 @@ const Footer = () => {
           <p>ChatOverflow &copy; 2023</p>
         </div>
         <div className="linksSection">
-          <a href="/privacy" className="footerLink">
+          <NavLink className="footerLink" to="/Privacy">
             Privacy
-          </a>
-          <a href="/about" className="footerLink">
+          </NavLink>
+          <NavLink className="footerLink" to="/About">
             About
-          </a>
-          <a href="/policies" className="footerLink">
-            Policies
-          </a>
+          </NavLink>
+          <NavLink className="footerLink" to="/ContactUs">
+            ContactUs
+          </NavLink>
         </div>
         <div className="socialMediaSection">
-          <a href="https://www.facebook.com" className="socialIcon">
+          <a
+            href="https://www.facebook.com"
+            className="socialIcon"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FontAwesomeIcon icon={faFacebook} />
           </a>
-          <a href="https://www.instagram.com" className="socialIcon">
+          <a
+            href="https://www.instagram.com"
+            className="socialIcon"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FontAwesomeIcon icon={faInstagram} />
           </a>
-          <a href="https://www.github.com" className="socialIcon">
+          <a
+            href="https://www.github.com"
+            className="socialIcon"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FontAwesomeIcon icon={faGithub} />
           </a>
-          <a href="https://www.discord.com" className="socialIcon">
+          <a
+            href="https://www.discord.com"
+            className="socialIcon"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FontAwesomeIcon icon={faDiscord} />
           </a>
         </div>

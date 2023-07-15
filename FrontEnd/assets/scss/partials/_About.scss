@@ -1,0 +1,41 @@
+.aboutPage {
+    min-height: calc(80vh - 140px);
+    padding-left: 15vw;
+    padding-right: 15vw;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .about-me-container h2 {
+    margin-top: 30px;
+    color: cornflowerblue;
+  }
+  
+  .about-me-container p {
+    margin-bottom: 15px;
+  }
+  
+  .about-me-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .about-me-container li {
+    margin-bottom: 5px;
+  }
+  
+  .about-me-container a {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+  
+  .about-me-container img {
+    max-width: 150px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  

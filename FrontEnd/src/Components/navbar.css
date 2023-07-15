@@ -19,11 +19,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  max-width: 1200px; /* Set a max-width for the navbar */
+  max-width: 1200px;
 }
 
 .navClass img {
   height: 50px;
   width: auto;
-  margin: 0 auto; /* Center the image horizontally */
+  margin: 0 auto;
 }
