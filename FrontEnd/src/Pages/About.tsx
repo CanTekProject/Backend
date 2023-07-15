@@ -61,11 +61,11 @@ function About() {
               alt="APPEALIE SaaS Awards"
             />
           </a>
-          APPEALIE SaaS Awards - Collaboration + Productivity (2021)
+          APPEALIE SaaS Awards - Collaboration + Productivity (2023)
         </p>
         <p>
           <a
-            href="https://remotetechawards.com/"
+            href="https://www.tech4goodawards.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -75,7 +75,7 @@ function About() {
               alt="RemoteTech Awards"
             />
           </a>
-          RemoteTech Awards - Developer Collaboration Platform (2021-2022)
+          Tech4Good Awards - Developer Collaboration Platform (2023)
         </p>
         <p>
           <a
@@ -89,7 +89,7 @@ function About() {
               alt="Webby"
             />
           </a>
-          Webby - The Best of the Internet (2021)
+          Webby - The Best of the Internet (2023)
         </p>
       </ul>
 
