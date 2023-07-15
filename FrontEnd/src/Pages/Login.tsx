@@ -47,7 +47,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ color: "white" }}>
+    <div
+      style={{
+        color: "white",
+        padding: "70px",
+      }}
+    >
       <h2>Login Page</h2>
       <form onSubmit={handleSubmit}>
         <div>

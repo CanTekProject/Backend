@@ -51,7 +51,7 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div style={{ color: "white" }}>
+    <div style={{ color: "white", padding: "70px" }}>
       <h2>Signup Page</h2>
       <form onSubmit={handleSubmit}>
         <div>

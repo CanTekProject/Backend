@@ -65,6 +65,7 @@ function HomePage() {
             type="button"
             className="btn btn-custom"
             onClick={handleButtonClick}
+            style={{ marginBottom: "20px" }}
           >
             Sign Up
           </button>

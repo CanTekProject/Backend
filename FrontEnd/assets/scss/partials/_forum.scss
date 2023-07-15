@@ -53,7 +53,9 @@ input {
 
 .forum-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-around;  
+  padding: 70px;
+  
 
   .left-sidebar-nav-links {
     list-style-type: none;

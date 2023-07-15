@@ -1,16 +1,29 @@
 .pages {
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-  }
-  
-  .navClass
-  {
-    background-color: #42344B;
-  }
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+}
 
-  .divClass
-  {
-    padding: 20px;
-  }
+.navClass {
+  background-color: #42344B;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.divClass {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  max-width: 1200px; /* Set a max-width for the navbar */
+}
+
+.navClass img {
+  height: 50px;
+  width: auto;
+  margin: 0 auto; /* Center the image horizontally */
+}

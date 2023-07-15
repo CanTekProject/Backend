@@ -6,6 +6,7 @@ import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/Login";
 import SignupPage from "./Pages/SignupPage";
 import Forum from "./Pages/Forum";
+import Footer from "./Components/footer";
 
 function App() {
   /* Check server connection response  */
@@ -28,6 +29,7 @@ function App() {
           <Route path="/Login" element={<LoginPage />} />
           <Route path="/Signup" element={<SignupPage />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
