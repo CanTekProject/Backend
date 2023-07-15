@@ -51,7 +51,7 @@ const Footer = () => {
             <FontAwesomeIcon icon={faInstagram} />
           </a>
           <a
-            href="https://www.github.com"
+            href="https://github.com/CanTekProject"
             className="socialIcon"
             target="_blank"
             rel="noopener noreferrer"

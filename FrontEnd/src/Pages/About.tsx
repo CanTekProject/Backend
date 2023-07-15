@@ -1,4 +1,7 @@
 import "../../assets/scss/partials/_About.scss";
+import APPEALIELogo from "../../assets/images/APPEALIE_Logo.png";
+import RemoteTechAwardsLogo from "../../assets/images/Award.png";
+import WebbyLogo from "../../assets/images/logo.svg";
 
 function About() {
   return (
@@ -25,8 +28,8 @@ function About() {
 
       <h2>Chat Overflow</h2>
       <p>
-        Chat Overflow helps developer just like yourself finding the answers
-        they need, when they need them.
+        Chat Overflow helps developers just like yourself find the answers they
+        need, when they need them.
       </p>
       <p>
         We're best known for our public Q&A platform that over 100 million
@@ -52,7 +55,11 @@ function About() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="appealie-logo.png" alt="APPEALIE SaaS Awards" />
+            <img
+              src={APPEALIELogo}
+              style={{ height: "50px", width: "200px" }}
+              alt="APPEALIE SaaS Awards"
+            />
           </a>
           APPEALIE SaaS Awards - Collaboration + Productivity (2021)
         </p>
@@ -62,19 +69,13 @@ function About() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="remotetechawards-logo.png" alt="RemoteTech Awards" />
+            <img
+              src={RemoteTechAwardsLogo}
+              style={{ height: "80px", width: "80px" }}
+              alt="RemoteTech Awards"
+            />
           </a>
           RemoteTech Awards - Developer Collaboration Platform (2021-2022)
-        </p>
-        <p>
-          <a
-            href="https://www.saasawards.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="saasawards-logo.png" alt="The SaaS Awards" />
-          </a>
-          The SaaS Awards - Best SaaS for Productivity (2022)
         </p>
         <p>
           <a
@@ -82,7 +83,11 @@ function About() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="webby-logo.png" alt="Webby" />
+            <img
+              src={WebbyLogo}
+              style={{ height: "100px", width: "100px" }}
+              alt="Webby"
+            />
           </a>
           Webby - The Best of the Internet (2021)
         </p>
@@ -121,11 +126,12 @@ function About() {
         <p>Adopt a customer-first mindset</p>
         <p>Be flexible and inclusive</p>
         <p>Be transparent</p>
-        <p>Empower people to depver outstanding results</p>
+        <p>Empower people to deliver outstanding results</p>
         <p>Keep community at our center</p>
         <p>Learn, share, grow</p>
       </ul>
     </div>
   );
 }
+
 export default About;
