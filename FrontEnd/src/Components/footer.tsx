@@ -33,6 +33,7 @@ const Footer = () => {
             ContactUs
           </NavLink>
         </div>
+
         <div className="socialMediaSection">
           <a
             href="https://www.facebook.com"
