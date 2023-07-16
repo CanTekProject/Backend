@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
-const { Secret } = require("./config/config.js");
-const bcrypt = require("bcryptjs");
 
 // Models
 const User = require("./model/user.model");
@@ -19,9 +19,23 @@ app.use(
 );
 
 app.use(express.json());
+
+// Connecting to MongoDB
+mongoose
+  .connect("mongodb+srv://CanTek:CanTek123@cantekcluster.uujud7m.mongodb.net/?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
+
 app.use(
   session({
-    secret: Secret,
+    secret: "secret",
     resave: false,
     saveUninitialized: false,
   })
@@ -29,22 +43,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Connect to MongoDB
-mongoose
-  .connect(
-    "mongodb+srv://CanTek:CanTek123@cantekcluster.uujud7m.mongodb.net/?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
-  });
 
 // Passport configuration
 passport.use(
@@ -60,17 +58,12 @@ passport.use(
           return done(null, false, { message: "Incorrect email or password" });
         }
 
-        user.comparePassword(password, function (matchError, isMatch) {
-          if (matchError) {
-            return done(error);
-          } else if (!isMatch) {
-            return done(null, false, {
-              message: "Incorrect email or password",
-            });
-          } else {
-            return done(null, user);
-          }
-        });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return done(null, false, { message: "Incorrect email or password" });
+        }
+
+        return done(null, user);
       } catch (error) {
         return done(error);
       }
@@ -78,86 +71,60 @@ passport.use(
   )
 );
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
 
 // Register route
 app.post("/api/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.json({ status: "error", message: "Email already exists" });
-    }
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(req.body.password, 25);
 
-    // Password encryption
-    const saltRounds = 10;
-    bcrypt.genSalt(saltRounds, function (saltError, salt) {
-      if (saltError) {
-        throw saltError;
-      } else {
-        bcrypt.hash(password, salt, function (hashError, password) {
-          if (hashError) {
-            throw hashError;
-          } else {
-            console.log(password);
-            const user = User.create({
-              username,
-              email,
-              password,
-            });
-          }
-        });
-      }
+    // Create a new user instance and collect the data
+    const user = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
     });
 
-    return res.json({ status: "ok", message: "User registered successfully" });
+    // Save the new user
+    await user.save();
+
+    // Return success if the new user is added to the database successfully
+    res.status(201).send({
+      message: "User Created Successfully",
+      result: user,
+    });
   } catch (error) {
-    console.error("Error during registration:", error);
-    return res.json({ status: "error", message: "Registration failed" });
+    // Catch and handle error if the new user wasn't added successfully to the database
+    res.status(500).send({
+      message: "Error creating user",
+      error,
+    });
   }
 });
 
 // Login route
-app.post("/api/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    try {
-      if (err || !user) {
-        return res
-          .status(401)
-          .json({ status: "error", message: "Incorrect email or password" });
-      }
-
-      req.login(user, (err) => {
-        if (err) {
-          return res.status(500).json({
-            status: "error",
-            message: "An error occurred during login",
-          });
-        }
-        return res
-          .status(200)
-          .json({ status: "ok", message: "Login successful" });
-      });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ status: "error", message: "An error occurred during login" });
-    }
-  })(req, res, next);
+app.post("/api/login", passport.authenticate("local"), (req, res) => {
+  // Authentication successful, handle the response
+  res.status(200).json({ status: "ok", message: "Login successful" });
 });
 
 // Logout route
 app.get("/api/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error during session destruction:", err);
-      return res.json({ status: "error", message: "Logout failed" });
-    }
-    delete req.user; // Clear the user property
-    return res.redirect("/");
-  });
+  req.logout();
+  // Clear the session data
+  req.session = null;
+  res.json({ status: "ok", message: "Logout successful" });
 });
+
 
 // Check authentication status
 app.get("/api/checkAuth", (req, res) => {

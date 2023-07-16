@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 interface LoginForm {
@@ -6,11 +7,34 @@ interface LoginForm {
   password: string;
 }
 
-const LoginPage = () => {
+interface LoginProps {
+  handleLogin: () => void;
+}
+
+const AlertMessage: React.FC<{ message: string; className?: string }> = ({
+  message,
+  className,
+}) => {
+  const alertStyle = {
+    backgroundColor: className === "alert-danger" ? "red" : "green",
+    padding: "10px",
+    borderRadius: "4px",
+    marginBottom: "10px",
+    color: "white",
+    fontWeight: "bold",
+  };
+
+  return <div style={alertStyle}>{message}</div>;
+};
+
+const LoginPage: React.FC<LoginProps> = ({ handleLogin }) => {
   const [loginForm, setLoginForm] = useState<LoginForm>({
     email: "",
     password: "",
   });
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertClassName, setAlertClassName] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -19,6 +43,13 @@ const LoginPage = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // Check if any required field is empty
+    if (!loginForm.email || !loginForm.password) {
+      setAlertMessage("Please fill in all the required fields");
+      setAlertClassName("alert-danger");
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:8000/api/login", {
@@ -31,29 +62,31 @@ const LoginPage = () => {
 
       const data = await response.json();
 
-      if (data.status === "ok") {
+      if (response.ok) {
         // Display success message
-        alert("Login successful!");
-        window.location.href = "/Home"; // Redirect to the home page after successful login
+        setAlertMessage("Login successful!");
+        setAlertClassName("alert-success");
+        handleLogin(); // Call the handleLogin function passed from props
+        navigate("/Home"); // Redirect to the home page after successful login
       } else {
         // Display error message
-        alert(`Login failed: ${data.message}`);
+        setAlertMessage(`Login failed: ${data.message}`);
+        setAlertClassName("alert-danger");
       }
     } catch (error) {
       // Handle network or server errors
       console.error("Error occurred:", error);
-      alert("An error occurred during login");
+      setAlertMessage("An error occurred during login");
+      setAlertClassName("alert-danger");
     }
   };
 
   return (
-    <div
-      style={{
-        color: "white",
-        padding: "70px",
-      }}
-    >
+    <div style={{ color: "white", padding: "70px" }}>
       <h2>Login Page</h2>
+      {alertMessage && (
+        <AlertMessage message={alertMessage} className={alertClassName} />
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email: </label>
@@ -62,6 +95,7 @@ const LoginPage = () => {
             name="email"
             value={loginForm.email}
             onChange={handleInputChange}
+            style={{ color: "black" }}
           />
         </div>
         <div>
@@ -71,6 +105,7 @@ const LoginPage = () => {
             name="password"
             value={loginForm.password}
             onChange={handleInputChange}
+            style={{ color: "black" }}
           />
         </div>
         <button type="submit">Login</button>

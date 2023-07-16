@@ -7,6 +7,22 @@ interface SignupForm {
   confirmPassword: string;
 }
 
+const AlertMessage: React.FC<{ message: string; className?: string }> = ({
+  message,
+  className,
+}) => {
+  const alertStyle = {
+    backgroundColor: className === "alert-danger" ? "red" : "green",
+    padding: "10px",
+    borderRadius: "4px",
+    marginBottom: "10px",
+    color: "white",
+    fontWeight: "bold",
+  };
+
+  return <div style={alertStyle}>{message}</div>;
+};
+
 const SignupPage: React.FC = () => {
   const [signupForm, setSignupForm] = useState<SignupForm>({
     username: "",
@@ -14,6 +30,8 @@ const SignupPage: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [alertClassName, setAlertClassName] = useState<string>("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -22,8 +40,22 @@ const SignupPage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // Check if any required field is empty
+    if (
+      !signupForm.username ||
+      !signupForm.email ||
+      !signupForm.password ||
+      !signupForm.confirmPassword
+    ) {
+      setAlertMessage("Please fill in all the required fields");
+      setAlertClassName("alert-danger");
+      return;
+    }
+
     if (signupForm.password !== signupForm.confirmPassword) {
-      alert("Passwords do not match");
+      setAlertMessage("Passwords do not match");
+      setAlertClassName("alert-danger");
       return;
     }
 
@@ -37,22 +69,36 @@ const SignupPage: React.FC = () => {
       });
 
       if (response.ok) {
-        // Registration successful
-        alert("Registration successful");
-      } else {
-        // Registration failed
         const data = await response.json();
-        alert(data.message);
+        const alertClass = data.style || "alert-success";
+        const alertMessage = data.message || "Registration successful";
+        setAlertMessage(alertMessage);
+        setAlertClassName(alertClass);
+        setSignupForm({
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      } else {
+        const data = await response.json();
+        const errorMessage = data.message || "Registration failed";
+        setAlertMessage(errorMessage);
+        setAlertClassName("alert-danger");
       }
     } catch (error) {
       console.error("Error during signup:", error);
-      alert("An error occurred during signup");
+      setAlertMessage("An error occurred during signup");
+      setAlertClassName("alert-danger");
     }
   };
 
   return (
     <div style={{ color: "white", padding: "70px" }}>
       <h2>Signup Page</h2>
+      {alertMessage && (
+        <AlertMessage message={alertMessage} className={alertClassName} />
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
@@ -61,6 +107,7 @@ const SignupPage: React.FC = () => {
             name="username"
             value={signupForm.username}
             onChange={handleInputChange}
+            style={{ color: "black" }}
           />
         </div>
         <div>
@@ -70,6 +117,7 @@ const SignupPage: React.FC = () => {
             name="email"
             value={signupForm.email}
             onChange={handleInputChange}
+            style={{ color: "black" }}
           />
         </div>
         <div>
@@ -79,6 +127,7 @@ const SignupPage: React.FC = () => {
             name="password"
             value={signupForm.password}
             onChange={handleInputChange}
+            style={{ color: "black" }}
           />
         </div>
         <div>
@@ -88,6 +137,7 @@ const SignupPage: React.FC = () => {
             name="confirmPassword"
             value={signupForm.confirmPassword}
             onChange={handleInputChange}
+            style={{ color: "black" }}
           />
         </div>
         <button type="submit">Signup</button>

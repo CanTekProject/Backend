@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import "./App.css";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./Components/navbar";
 import HomePage from "./Pages/HomePage";
@@ -12,24 +12,37 @@ import Privacy from "./Pages/Privacy";
 import ContactUs from "./Pages/ContactUs";
 
 function App() {
-  /* Check server connection response  */
-  const [_message, setMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
+  };
 
   useEffect(() => {
-    fetch("http://localhost:8000")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
+    const storedLoginStatus = localStorage.getItem("isLoggedIn");
+    if (storedLoginStatus === "true") {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/Forum" element={<Forum />} />
           <Route path="/Home" element={<HomePage />} />
-          <Route path="/Login" element={<LoginPage />} />
+          <Route
+            path="/Login"
+            element={<LoginPage handleLogin={handleLogin} />}
+          />
           <Route path="/Signup" element={<SignupPage />} />
           <Route path="/About" element={<About />} />
           <Route path="/Privacy" element={<Privacy />} />
