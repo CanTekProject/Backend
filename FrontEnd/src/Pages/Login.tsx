@@ -27,7 +27,7 @@ const AlertMessage: React.FC<{ message: string; className?: string }> = ({
   return <div style={alertStyle}>{message}</div>;
 };
 
-const LoginPage: React.FC<LoginProps> = ({ handleLogin }) => {
+const LoginPage = ({ handleLogin }: LoginProps) => {
   const [loginForm, setLoginForm] = useState<LoginForm>({
     email: "",
     password: "",
