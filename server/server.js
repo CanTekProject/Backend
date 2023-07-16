@@ -84,32 +84,45 @@ passport.deserializeUser((id, done) => {
 // Register route
 app.post("/api/register", async (req, res) => {
   try {
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(req.body.password, 25);
+    const { username, email, password, confirmPassword } = req.body;
 
-    // Create a new user instance and collect the data
-    const user = new User({
-      username: req.body.username,
-      email: req.body.email,
+    // Check if any required field is empty
+    if (!username || !email || !password || !confirmPassword) {
+      return res.status(400).json({ message: "Please fill in all the required fields" });
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user instance and save it to the database
+    const newUser = new User({
+      username,
+      email,
       password: hashedPassword,
     });
-
-    // Save the new user
-    await user.save();
+    await newUser.save();
 
     // Return success if the new user is added to the database successfully
-    res.status(201).send({
-      message: "User Created Successfully",
-      result: user,
-    });
+    res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     // Catch and handle error if the new user wasn't added successfully to the database
-    res.status(500).send({
-      message: "Error creating user",
-      error,
-    });
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: "Error creating user" });
   }
 });
+
+
 
 // Login route
 app.post("/api/login", passport.authenticate("local"), (req, res) => {

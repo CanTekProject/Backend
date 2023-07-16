@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface SignupForm {
   username: string;
@@ -24,6 +25,7 @@ const AlertMessage: React.FC<{ message: string; className?: string }> = ({
 };
 
 const SignupPage: React.FC = () => {
+  const navigate = useNavigate();
   const [signupForm, setSignupForm] = useState<SignupForm>({
     username: "",
     email: "",
@@ -32,6 +34,16 @@ const SignupPage: React.FC = () => {
   });
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [alertClassName, setAlertClassName] = useState<string>("");
+
+  useEffect(() => {
+    if (alertClassName === "alert-success") {
+      const timer = setTimeout(() => {
+        navigate("/Login");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [alertClassName, navigate]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -69,11 +81,8 @@ const SignupPage: React.FC = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        const alertClass = data.style || "alert-success";
-        const alertMessage = data.message || "Registration successful";
-        setAlertMessage(alertMessage);
-        setAlertClassName(alertClass);
+        setAlertMessage("Registration successful");
+        setAlertClassName("alert-success");
         setSignupForm({
           username: "",
           email: "",
@@ -145,9 +154,9 @@ const SignupPage: React.FC = () => {
       <hr style={{ margin: "20px", color: "white" }}></hr>
       <div>
         <p>Already have an account?</p>
-        <a href="/Login" className="registerLink">
+        <Link to="/Login" className="registerLink">
           <p>Click here to Login</p>
-        </a>
+        </Link>
       </div>
     </div>
   );
