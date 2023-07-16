@@ -6,9 +6,8 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
-
-// Models
 const User = require("./model/user.model");
+const Message = require("./model/message.model");
 
 const app = express();
 app.use(
@@ -17,10 +16,8 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(express.json());
 
-// Connecting to MongoDB
 mongoose
   .connect("mongodb+srv://CanTek:CanTek123@cantekcluster.uujud7m.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -44,7 +41,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Passport configuration
 passport.use(
   new LocalStrategy(
     {
@@ -81,31 +77,25 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-// Register route
 app.post("/api/register", async (req, res) => {
   try {
     const { username, email, password, confirmPassword } = req.body;
 
-    // Check if any required field is empty
     if (!username || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "Please fill in all the required fields" });
     }
 
-    // Check if passwords match
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user instance and save it to the database
     const newUser = new User({
       username,
       email,
@@ -113,33 +103,23 @@ app.post("/api/register", async (req, res) => {
     });
     await newUser.save();
 
-    // Return success if the new user is added to the database successfully
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    // Catch and handle error if the new user wasn't added successfully to the database
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Error creating user" });
   }
 });
 
-
-
-// Login route
 app.post("/api/login", passport.authenticate("local"), (req, res) => {
-  // Authentication successful, handle the response
   res.status(200).json({ status: "ok", message: "Login successful" });
 });
 
-// Logout route
 app.get("/api/logout", (req, res) => {
   req.logout();
-  // Clear the session data
   req.session = null;
   res.json({ status: "ok", message: "Logout successful" });
 });
 
-
-// Check authentication status
 app.get("/api/checkAuth", (req, res) => {
   if (req.isAuthenticated()) {
     return res.json({ status: "ok", message: "User is authenticated" });
@@ -148,7 +128,6 @@ app.get("/api/checkAuth", (req, res) => {
   }
 });
 
-// Default route
 app.get("/", (req, res) => {
   if (req.isAuthenticated()) {
     res.send("Hello, user is authenticated!");
@@ -157,7 +136,49 @@ app.get("/", (req, res) => {
   }
 });
 
-// Start the server
-app.listen(8000, () => {
-  console.log("Server is running on port 8000.");
+app.post("/api/chat/message", async (req, res) => {
+  try {
+    const { roomID, message } = req.body;
+
+    // Perform authentication here
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Save the message to the database
+    const newMessage = new Message({
+      roomID,
+      message,
+      userID: req.user._id,
+    });
+    await newMessage.save();
+
+    res.status(200).json({ status: "ok", message: "Message sent successfully" });
+  } catch (error) {
+    console.error("Error sending message:", error);
+    res.status(500).json({ message: "Error sending message" });
+  }
+});
+
+app.get("/api/chat/messages", async (req, res) => {
+  try {
+    const { roomID } = req.query;
+
+    // Perform authentication here
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Fetch messages from the database
+    const messages = await Message.find({ roomID }).populate("userID");
+    res.status(200).json({ status: "ok", messages });
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ message: "Error fetching messages" });
+  }
+});
+
+const PORT = 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });

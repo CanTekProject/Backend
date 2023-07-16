@@ -1,4 +1,3 @@
-// Navbar.tsx
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./navbar.css";
@@ -19,9 +18,11 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, handleLogout }) => {
         <NavLink className="pages" to="/Forum">
           Forum
         </NavLink>
-        <a className="pages" href="#Chat">
-          Chat
-        </a>
+        {isLoggedIn && (
+          <NavLink className="pages" to="/ChatHome">
+            Chat
+          </NavLink>
+        )}
         <NavLink className="pages" to="/Home">
           <img
             src="./logo.ico.png"

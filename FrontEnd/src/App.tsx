@@ -10,6 +10,11 @@ import Footer from "./Components/footer";
 import About from "./Pages/About";
 import Privacy from "./Pages/Privacy";
 import ContactUs from "./Pages/ContactUs";
+import ChatHome from "./Components/ChatHome";
+import Chat from "./Components/Chat";
+import { io } from "socket.io-client";
+
+const socket = io(import.meta.env.VITE_SOCKET_URL_SERVER);
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -43,6 +48,11 @@ function App() {
             path="/Login"
             element={<LoginPage handleLogin={handleLogin} />}
           />
+          <Route
+            path="/ChatHome"
+            element={<ChatHome socket={socket} />}
+          />
+          <Route path="/Chat" element={<Chat socket={socket} />} />
           <Route path="/Signup" element={<SignupPage />} />
           <Route path="/About" element={<About />} />
           <Route path="/Privacy" element={<Privacy />} />
