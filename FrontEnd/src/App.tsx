@@ -13,6 +13,8 @@ import ContactUs from "./Pages/ContactUs";
 import ChatHome from "./Components/ChatHome";
 import Chat from "./Components/Chat";
 import { io } from "socket.io-client";
+import ForumPage from "./Pages/ForumPage";
+import ChatPage from "./Pages/ChatPage";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL_SERVER);
 
@@ -42,16 +44,15 @@ function App() {
         <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/ForumPage" element={<ForumPage />} />
+          <Route path="/ChatPage" element={<ChatPage />} />
           <Route path="/Forum" element={<Forum />} />
           <Route path="/Home" element={<HomePage />} />
           <Route
             path="/Login"
             element={<LoginPage handleLogin={handleLogin} />}
           />
-          <Route
-            path="/ChatHome"
-            element={<ChatHome socket={socket} />}
-          />
+          <Route path="/ChatHome" element={<ChatHome socket={socket} />} />
           <Route path="/Chat" element={<Chat socket={socket} />} />
           <Route path="/Signup" element={<SignupPage />} />
           <Route path="/About" element={<About />} />

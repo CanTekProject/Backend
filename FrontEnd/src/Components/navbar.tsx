@@ -15,13 +15,24 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, handleLogout }) => {
   return (
     <nav className="navClass">
       <div className="divClass">
-        <NavLink className="pages" to="/Forum">
-          Forum
-        </NavLink>
-        {isLoggedIn && (
-          <NavLink className="pages" to="/ChatHome">
-            Chat
-          </NavLink>
+        {!isLoggedIn ? (
+          <>
+            <NavLink className="pages" to="/ForumPage">
+              Forum
+            </NavLink>
+            <NavLink className="pages" to="/ChatPage">
+              Chat
+            </NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink className="pages" to="/Forum">
+              Forum
+            </NavLink>
+            <NavLink className="pages" to="/ChatHome">
+              Chat
+            </NavLink>
+          </>
         )}
         <NavLink className="pages" to="/Home">
           <img
