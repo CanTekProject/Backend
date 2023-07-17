@@ -161,5 +161,4 @@ const SignupPage: React.FC = () => {
     </div>
   );
 };
-
 export default SignupPage;
