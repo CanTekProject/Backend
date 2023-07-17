@@ -10,14 +10,18 @@ const User = require("./model/user.model");
 const Message = require("./model/message.model");
 
 const app = express();
+
+// Enable Cross-Origin Resource Sharing
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
 );
+
 app.use(express.json());
 
+// Connect to MongoDB
 mongoose
   .connect("mongodb+srv://CanTek:CanTek123@cantekcluster.uujud7m.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
@@ -30,17 +34,23 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
+// Set up session middleware
 app.use(
   session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
+    secret: "secret", // Secret key used to sign the session ID cookie
+    resave: false, // Whether to save the session if unmodified
+    saveUninitialized: false, // Whether to save the uninitialized session
   })
 );
 
+// Initialize Passport middleware
 app.use(passport.initialize());
+
+// Enable persistent login sessions
 app.use(passport.session());
 
+
+// Configure Passport local strategy for authentication
 passport.use(
   new LocalStrategy(
     {
@@ -67,6 +77,7 @@ passport.use(
   )
 );
 
+// Serialize and deserialize user for session management
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -77,10 +88,12 @@ passport.deserializeUser((id, done) => {
   });
 });
 
+// User registration endpoint
 app.post("/api/register", async (req, res) => {
   try {
     const { username, email, password, confirmPassword } = req.body;
 
+    // Validation checks
     if (!username || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "Please fill in all the required fields" });
     }
@@ -89,11 +102,13 @@ app.post("/api/register", async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
+    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash the password and create a new user
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
@@ -110,16 +125,19 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
+// User login endpoint
 app.post("/api/login", passport.authenticate("local"), (req, res) => {
   res.status(200).json({ status: "ok", message: "Login successful" });
 });
 
+// User logout endpoint
 app.get("/api/logout", (req, res) => {
   req.logout();
   req.session = null;
   res.json({ status: "ok", message: "Logout successful" });
 });
 
+// Check user authentication status endpoint
 app.get("/api/checkAuth", (req, res) => {
   if (req.isAuthenticated()) {
     return res.json({ status: "ok", message: "User is authenticated" });
@@ -128,6 +146,7 @@ app.get("/api/checkAuth", (req, res) => {
   }
 });
 
+// Default route
 app.get("/", (req, res) => {
   if (req.isAuthenticated()) {
     res.send("Hello, user is authenticated!");
@@ -136,6 +155,7 @@ app.get("/", (req, res) => {
   }
 });
 
+// Send chat message endpoint
 app.post("/api/chat/message", async (req, res) => {
   try {
     const { roomID, message } = req.body;
@@ -160,6 +180,7 @@ app.post("/api/chat/message", async (req, res) => {
   }
 });
 
+// Fetch chat messages endpoint
 app.get("/api/chat/messages", async (req, res) => {
   try {
     const { roomID } = req.query;
@@ -178,6 +199,7 @@ app.get("/api/chat/messages", async (req, res) => {
   }
 });
 
+// Start the server and listen on the specified port
 const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
